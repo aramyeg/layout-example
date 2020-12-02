@@ -1,41 +1,40 @@
-import React, {useState} from 'react';
-import {TextField, InputAdornment, Card} from '@material-ui/core';
+import React, {useState, memo} from 'react';
+import {TextField, InputAdornment, Grid, Avatar} from '@material-ui/core';
 import {AccountCircle} from '@material-ui/icons';
 import {SEARCH_USERS} from '../../url';
+import {useDataFetching} from '../../../hooks';
 import axios from 'axios';
 
 const Users = () => {
 
   const [value, setValue] = useState('');
-  const [data, setData] = useState([]);
+  const {data, setDynamicParams} = useDataFetching( SEARCH_USERS, false);
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    searchUsers()
 
-  }
-
-  const searchUsers = async () => {
-    try {
-      const resp = await axios.get(SEARCH_USERS, {
-        params: {
-          q: `${value.trim()} type:user`,
-          per_page: 10,
-        }
-      });
-      const data = await resp.data;
-      setData(data.items)
-
-    }
-    catch (e) {
-      console.log(e)
-    }
+    value.trim().length > 2 &&
+    setDynamicParams({
+      q: `${value.trim()} type:user`,
+      per_page: 10,
+    })
   }
 
   const mapUsers = () => {
 
-    return data?.map((item, ind)=>{
-      return <Card key={item.id}>{item.login}</Card>
+    console.log(data)
+
+    return data?.items?.map((item)=>{
+      return (
+        <Grid item style={{margin : "20px", padding: "5px", border: "1px solid black"}} justify="center" alignItems="center" container direction="row" xs={12} key={item.id}>
+          <Grid item xs={12} md={3}>
+            <Avatar alt="user avatar" src={item.avatar_url} />
+          </Grid>
+          <Grid item xs={4} md={3}>{item.login}</Grid>
+          <Grid item xs={4} md={3}>{item.type}</Grid>
+          <Grid item xs={4} md={3}>{item.id}</Grid>
+        </Grid>
+      )
     })
   }
 
@@ -65,4 +64,4 @@ const Users = () => {
   )
 }
 
-export default Users;
+export default memo(Users);
