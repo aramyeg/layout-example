@@ -3,7 +3,7 @@ import {TextField, InputAdornment, Grid, Avatar} from '@material-ui/core';
 import {AccountCircle} from '@material-ui/icons';
 import {SEARCH_USERS} from '../../url';
 import {useDataFetching} from '../../../hooks';
-import axios from 'axios';
+import './Users.css';
 
 const Users = () => {
 
@@ -18,7 +18,7 @@ const Users = () => {
       q: `${value.trim()} type:user`,
       per_page: 10,
     })
-  }
+  };
 
   const mapUsers = () => {
 
@@ -26,7 +26,7 @@ const Users = () => {
 
     return data?.items?.map((item)=>{
       return (
-        <Grid item style={{margin : "20px", padding: "5px", border: "1px solid black"}} justify="center" alignItems="center" container direction="row" xs={12} key={item.id}>
+        <Grid  className={"Users__row"} justify="center" alignItems="center" container direction="row" key={item.id}>
           <Grid item xs={12} md={3}>
             <Avatar alt="user avatar" src={item.avatar_url} />
           </Grid>
@@ -36,7 +36,7 @@ const Users = () => {
         </Grid>
       )
     })
-  }
+  };
 
   return(
     <>
@@ -62,6 +62,6 @@ const Users = () => {
       {mapUsers()}
     </>
   )
-}
+};
 
 export default memo(Users);
