@@ -75,7 +75,8 @@ const Users = () => {
         onChange={handleChange}
         value={value}
       />
-      {data?.items?.length ?
+      {
+        data?.items?.length ?
         mapUsers()
         :
         debouncedValue.trim().length > 2 &&
