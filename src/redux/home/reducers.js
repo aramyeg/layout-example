@@ -1,10 +1,10 @@
-import {INCREMENT_COUNTER, DECREMENT_COUNTER} from '../actions/homeActions';
+import {INCREMENT_COUNTER, DECREMENT_COUNTER} from './actions';
 
 const initialState = {
   counter : 0,
 };
 
-function homeReducer(state = initialState, action){
+function homeReducers(state = initialState, action){
   switch (action.type) {
     case INCREMENT_COUNTER:
       return {
@@ -20,4 +20,4 @@ function homeReducer(state = initialState, action){
   return state;
 }
 
-export default homeReducer;
+export default homeReducers;

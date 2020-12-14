@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {IconButton} from '@material-ui/core';
 import {AddCircle, RemoveCircle} from '@material-ui/icons';
 import {useSelector, useDispatch} from 'react-redux';
-import {incrementCounter, decrementCounter} from '../../../redux/actions/homeActions';
+import {incrementCounter, decrementCounter} from '../../../redux/home/actions';
 
 const Home = () => {
 

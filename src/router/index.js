@@ -1,4 +1,4 @@
-import {MainLayout} from '../containers/layouts/MainLayout';
+import {MainLayout} from '../components/layouts/MainLayout';
 import {Home, Repositories, Users} from '../containers/views';
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React from 'react';
