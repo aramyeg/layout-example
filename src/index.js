@@ -8,8 +8,6 @@ import store from './redux/store';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-console.log(store.getState());
-
 ReactDOM.render(
     <Provider store={store}>
       <MainRouter />

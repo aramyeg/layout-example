@@ -1,9 +1,8 @@
 import React, {useState, memo, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {SEARCH_USERS} from '../../../url';
-import {useDataFetching, useCustomDebounce} from '../../../hooks';
-import {fetchUsersByQuery} from '../../../redux/users/actions'
+import {useCustomDebounce} from '../../../hooks';
+import {fetchUsersByQuery, setPageNumber} from '../../../redux/users/actions';
 
 import {
   TextField,
@@ -17,18 +16,19 @@ import './Users.css';
 
 const Users = () => {
 
-  const [value, setValue] = useState('');
-  const {data, setDynamicParams} = useDataFetching(SEARCH_USERS, false);
-  const debouncedValue = useCustomDebounce(value, 500);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageCount, setPageCount] = useState(0);
   const dispatch = useDispatch();
   const userData = useSelector(state => state.Users.users);
+  const totalCount = useSelector(state => state.Users.totalCount);
+  const pageNumber = useSelector(state => state.Users.pageNumber);
 
-  console.log(userData)
+  const [value, setValue] = useState('');
+  const debouncedValue = useCustomDebounce(value, 500);
+  // const [pageNumber, setPageNumber] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+
 
   useEffect(() => {
-    setPageNumber(1);
+    dispatch(setPageNumber(1));
     getUsers(1);
   }, [debouncedValue]);
 
@@ -37,26 +37,21 @@ const Users = () => {
   }, [pageNumber]);
 
   useEffect(() => {
-    let pages = data ? Math.ceil(data.total_count / 10) : 0;
+    let pages = Math.ceil(totalCount / 10);
     pages = pages > 100 ? 100 : pages;
     setPageCount(pages);
-  }, [data]);
+  }, [userData, totalCount]);
 
   const getUsers = (passedPageNumber) => {
 
     debouncedValue.trim().length > 2 &&
-    // setDynamicParams({
-    //   q: `${debouncedValue.trim()} type:user`,
-    //   per_page: 10,
-    //   page: passedPageNumber ? passedPageNumber : pageNumber
-    // });
     dispatch(fetchUsersByQuery(
       {
-        q: `add type:user`,
+        q: `${debouncedValue.trim()} type:user`,
         per_page: 10,
-        page: 1
+        page: passedPageNumber ? passedPageNumber : pageNumber,
       }
-    ))
+    ));
   };
 
   const handleChange = (ev) => {
@@ -64,7 +59,7 @@ const Users = () => {
   };
 
   const mapUsers = () => {
-    return data?.items?.map((item) => {
+    return userData?.map((item) => {
       return (
         <Grid className="Users__row" justify="center"
               alignItems="center" container direction="row"
@@ -99,7 +94,7 @@ const Users = () => {
         value={value}
       />
       {
-        data?.items?.length ?
+        userData?.length ?
           mapUsers()
           :
           debouncedValue.trim().length > 2 &&
@@ -123,7 +118,7 @@ const Users = () => {
                   variant="outlined"
                   shape="rounded"
                   onChange={(ev, page) => {
-                    setPageNumber(page);
+                    dispatch(setPageNumber(page))
                   }}/>
     </>
   );

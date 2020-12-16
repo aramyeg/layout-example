@@ -6,7 +6,7 @@ function* fetchUsers(action) {
 
   try {
     const response = yield call(getUsers, action.queryParams);
-    yield put(actions.fetchUsersSuccess(response?.data?.items));
+    yield put(actions.fetchUsersSuccess(response?.data?.items, response?.data?.total_count));
   } catch (e) {
     yield put(actions.fetchUsersFail(e.message()));
   }

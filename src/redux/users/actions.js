@@ -1,6 +1,7 @@
-export const FETCH_USERS_BY_QUERY = "FETCH_USERS_BY_QUERY";
-export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
-export const FETCH_USERS_FAIL = "FETCH_USERS_FAIL";
+export const FETCH_USERS_BY_QUERY = 'FETCH_USERS_BY_QUERY';
+export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
+export const FETCH_USERS_FAIL = 'FETCH_USERS_FAIL';
+export const SET_PAGE_NUMBER = 'SET_PAGE_NUMBER';
 
 export function fetchUsersByQuery(queryParams) {
   return {
@@ -9,10 +10,11 @@ export function fetchUsersByQuery(queryParams) {
   };
 }
 
-export function fetchUsersSuccess(users) {
+export function fetchUsersSuccess(users, totalCount) {
   return {
     type: FETCH_USERS_SUCCESS,
-    users
+    users,
+    totalCount
   };
 }
 
@@ -23,14 +25,24 @@ export function fetchUsersFail(error) {
   };
 }
 
+
+export function setPageNumber(number) {
+  return {
+    type: SET_PAGE_NUMBER,
+    number
+  };
+}
+
 const actions = {
   FETCH_USERS_BY_QUERY,
   FETCH_USERS_SUCCESS,
   FETCH_USERS_FAIL,
+  SET_PAGE_NUMBER,
 
   fetchUsersByQuery,
   fetchUsersSuccess,
-  fetchUsersFail
-}
+  fetchUsersFail,
+  setPageNumber
+};
 
 export default actions;
